@@ -1,0 +1,9 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+
+/node_modules
+package-lock.json
+log.log
+error_log.log
+
+
