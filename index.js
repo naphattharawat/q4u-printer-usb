@@ -43,7 +43,7 @@ function log(text, log = true) {
 
 
 function printTest() {
-    const device = new escpos.Network(txtPrinterIp.value);
+    const device = new escpos.USB();
     const printer = new escpos.Printer(device);
     log(`Print test....`);
 
@@ -118,7 +118,7 @@ function start() {
                             var json = JSON.parse(message);
                             var queue = json;
                             if (queue) {
-                                printQueue(queue, printers[idx].printerIp);
+                                printQueue(queue);
                             } else {
                                 log(`[ERROR] Queue not found.`, false);
                             }
@@ -149,10 +149,10 @@ function start() {
     }
 }
 
-async function printQueue(queue, printerIp) {
+async function printQueue(queue) {
     try {
-        const device = new escpos.Network(printerIp);
-        if (device.device.connecting) {
+        const device = new escpos.USB();
+        if (device) {
             const printer = new escpos.Printer(device);
             if (queue) {
                 const printSmallQueue = queue.printSmallQueue || 'N';
