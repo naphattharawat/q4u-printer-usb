@@ -1,0 +1,47 @@
+epson raspberry install
+
+1. sudo apt-get update
+2. sudo apt-get install cups
+3. sudo usermod -a -G lpadmin pi
+4. sudo nano /etc/cups/cupsd.conf 
+5. in file cups.conf
+4.1 Inside the file, look for this section: 
+# Only listen for connections from the local machine
+       Listen localhost:631
+/Users/beer/trantech/trantech-customer-web/src/app/customers/delivery-new/delivery-new.component.html       - Comment out the “Listen localhost:631” line and replace it with the following:
+       # Only listen for connections from the local machine
+       # Listen localhost:631
+       Port 631
+      4.2 Scroll further down in the config file until you see the “location” sections. In the block below, we’ve bolded the lines you need to add to the config:
+      - add “Allow @local”
+      < Location / >
+      # Restrict access to the server...
+     Order allow,deny
+      Allow @local
+ < /Location >
+
+ < Location /admin >
+ # Restrict access to the admin pages...
+ Order allow,deny
+ Allow @local
+ < /Location >
+
+ < Location /admin/conf >
+ AuthType Default
+ Require user @SYSTEM
+
+ # Restrict access to the configuration files...
+ Order allow,deny
+ Allow @local
+ < /Location >
+5. sudo /etc/init.d/cups restart
+6. sudo mkdir 777 /install
+7. cd /install
+8. sudo wget -O /install/master.zip ‘https://github.com/beerIT15kmutnb/epsonsimplecups/archive/master.zip’
+9. sudo unzip master.zip
+10. sudo apt-get install libcups2-dev
+11. sudo apt-get install libcupsimage2-dev
+12. cd epsonimplecups-master
+13. sudo make
+14. sudo make install
+15. sudo apt-get install build-essential libudev-dev
